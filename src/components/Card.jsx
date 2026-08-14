@@ -1,5 +1,5 @@
 import './Card.css'
-
+import cardBackImg from '../assets/imgs/card-back.png'
 
 export default function Card({
     url,
@@ -8,11 +8,19 @@ export default function Card({
 
     return (
     <section className='card'>
-        <img 
-            src={url} 
-            alt="memory-card"
-            onClick={handleClick}
-        />        
+        <div className='card-front'>
+            <img 
+                src={url} 
+                alt="memory-card"
+                onClick={handleClick}
+            />  
+        </div>
+        <div className='card-back'>
+            <img
+                src={cardBackImg}
+                alt='card-back'
+            ></img>
+        </div>
     </section>
     )
 }

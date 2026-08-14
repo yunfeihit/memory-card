@@ -1,8 +1,28 @@
 .card {
-    width: 200px;
+    width: 250px;
+    height: 367px;
+    position: relative;
+    perspective: 100px;
     border: 1px solid black;
 }
 
 .card img {
     width: 100%;
+}
+
+
+/* Make 3D effect of card: */
+.card-front,
+.card-back {
+    backface-visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-back {
+    transform: rotateY(180deg);
 }
