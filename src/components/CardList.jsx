@@ -20,6 +20,10 @@ const getRandomItems = (array, n) => {
 
 export default function CardList({
     cardAmount,
+    handleGetScore,
+    setHighestScore,
+    score,
+    setGameOver,
 }) {
     //Edge Case:
     if(cardAmount > 20) {
@@ -48,18 +52,25 @@ export default function CardList({
             endGame();
             return;
         }
-
+        //mark clicked img, ramdom choose new contentImgs:
         setClickedImgs(prev => [...prev, url]);
         const newContentImgs = getRandomItems(allImgUrls, cardAmount);
         setContentImgs(newContentImgs);
+        //add score:
+        handleGetScore();
     }
 
-    const endGame = () => {};
+    const endGame = () => {
+        setHighestScore(prev => Math.max(prev, score));
+        setGameOver(true);
+    };
 
     //when render at the first time, 'imgUrls' will be empty, show 'loading...'
     //after render, useEffect will run and load the 'imgUrls'
     return (
-        <section className='card-list'>
+        <section 
+            className='card-list'
+        >
             {
                 contentImgs.length === 0
                 ? <div>pending...</div>
