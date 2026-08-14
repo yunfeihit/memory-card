@@ -3,7 +3,7 @@ import Card from './Card.jsx'
 import { useEffect, useState } from 'react';
 import pokemonImgUrlsPromise from '../api/pokemon.js';
 
-//Inner Function
+//Tool Functions:
 const getRandomItems = (array, n) => {
     if(array.length === 0) return [];
 
@@ -18,55 +18,58 @@ const getRandomItems = (array, n) => {
     return randomItems;
 }
 
-const arrayToMarkedArray = (array) => {
-    const markArray = []
-    for(let i = 0; i < array.length; i++) {
-        markArray.push({
-            url: array[i],
-            clicked: false
-        })
-    }
-    return markArray;
-}
-
 export default function CardList({
     cardAmount,
-    handleClickCard
 }) {
+    //Edge Case:
     if(cardAmount > 20) {
         console.log('cards amount must less than 20!');
-        return
+        return;
     }
     
+    //State:
+    const [allImgUrls, setAllImgUrls] = useState([]);
+    const [clickedImgs, setClickedImgs] = useState([]);
     const [contentImgs, setContentImgs] = useState([]);
 
     useEffect(() => {
         pokemonImgUrlsPromise
-            .then(
-                imgUrls => {
-                    const contentImgs = getRandomItems(imgUrls, cardAmount);
-                    setContentImgs(contentImgs)
-                })
-    }, [cardAmount]);
+            .then(allImgUrls => {
+                setAllImgUrls(allImgUrls);
+                const contentImgs = getRandomItems(allImgUrls, cardAmount);
+                setContentImgs(contentImgs);
+            })
+    }, [])
 
-    let sectionContent = [];
+    //Inner Function:
+    const clickCard = (url) => {
+        //Judge if game is end first:
+        if(clickedImgs.includes(url)) {
+            endGame();
+            return;
+        }
+
+        setClickedImgs(prev => [...prev, url]);
+        const newContentImgs = getRandomItems(allImgUrls, cardAmount);
+        setContentImgs(newContentImgs);
+    }
+
+    const endGame = () => {};
+
     //when render at the first time, 'imgUrls' will be empty, show 'loading...'
     //after render, useEffect will run and load the 'imgUrls'
-    if(contentImgs.length === 0) {
-        sectionContent.push(
-        <div>pending...</div>
-    )} else { 
-        for(let i = 0; i < cardAmount; i++) {
-            sectionContent.push(
-                <Card
-                    key={contentImgs[i]}
-                    url={contentImgs[i]}
-                    handleClick={handleClickCard}
-                />)
-    }}
-
     return (
         <section className='card-list'>
-            {sectionContent} 
+            {
+                contentImgs.length === 0
+                ? <div>pending...</div>
+                : contentImgs.map(url => 
+                    <Card
+                        key={url}
+                        url={url}
+                        handleClick={() => clickCard(url)}
+                    />
+                )
+            } 
         </section>
 )}

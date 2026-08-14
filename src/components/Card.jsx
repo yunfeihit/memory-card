@@ -10,7 +10,7 @@ export default function Card({
     <section className='card'>
         <img 
             src={url} 
-            alt="card"
+            alt="memory-card"
             onClick={handleClick}
         />        
     </section>
