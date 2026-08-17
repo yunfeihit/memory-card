@@ -76,7 +76,7 @@ export default function CardList({
                 ? <div>pending...</div>
                 : contentImgs.map(url => 
                     <Card
-                        key={url}
+                        key={`${url}-${Date.now()}`}
                         url={url}
                         handleClick={() => clickCard(url)}
                     />
