@@ -1,8 +1,6 @@
 .card {
     width: 250px;
     height: 367px;
-    position: relative;
-    perspective: 100px;
     border: 1px solid black;
 }
 
@@ -23,6 +21,17 @@
     justify-content: center;
 }
 
-.card-back {
+.card-front {
+    transform: rotateY(180deg);
+}
+
+.card {
+    position: relative;
+    perspective: 1000px;
+    transition: transform 0.4s ease;
+    transform-style: preserve-3d;
+}
+
+.card.flipped {
     transform: rotateY(180deg);
 }
